@@ -1,6 +1,6 @@
 const app = require("../app");
 const http = require('http');
-const mongoose =  require('mongoose');
+const database =  require('../database/connect');
 
 const {
     PORT,
@@ -16,17 +16,7 @@ const options = {
 app.set('port', port);
 const server  = http.createServer(app)
 const socket = require("../socket/socket")(server);
-mongoose.connect(uri, options)
-.then(
-    () => {
-        console.log({
-            connected: "Database connected"
-        })
-    },
-    err => console.log({
-        error: err
-    })
-);
+database(uri, options)
 
 server.listen(PORT || 3000, function() {
     console.log(`server started ${PORT || 3000}`)
