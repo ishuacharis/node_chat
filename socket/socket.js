@@ -8,27 +8,35 @@ module.exports = function(server) {
 
     });
 
-    io.on('connection', (socket) => {
 
-        console.log("connected to socket")
+    io.on("connection", (socket) => {
+        console.log("socket connected on now ins socket file "+ socket.id)
+        io.emit("hello", "world")
+
+        socket.emit('isconnected', {
+            connected: 'successfull'
+        })
+        socket.on("typing" , (data, callback) => {
+       
+            console.log(`vue data ${data.isTyping}`)
+
+            callback({
+                status: 'ok'
+            })
+        })
+        
+        socket.on('disconnected', () => {
+            console.log("socket disconnected "+ socket.id)
+        })
     })
+
+    
+
 
     io.on('disconnect', function() {
         console.log("socket disconnected")
     })
 
-    io.on("connection", (socket) => {
-        console.log("socket connected on now ins socket file "+ socket.id)
-        socket.emit('isconnected', {
-            connected: 'sucessfull'
-        })
-        socket.on("user" , function() {
-            console.log("working")
-        })
-        
-        socket.on('disconnect', () => {
-            console.log("socket disconnected ")
-        })
-    })
+    
 
 }
