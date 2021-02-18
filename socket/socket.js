@@ -27,18 +27,8 @@ module.exports = function(server) {
             })
         })
 
-        //listen to user typing
-        socket.on('user_typing' , () => {
-            typers[socket.id] = 1
-
-            socket.broadcast.emit("user_typing" , {
-                user: users[socket.id].username,
-                typers: Object.keys(typers).length
-            })
-        })
-
-        //listen to new user
-        socket.on('new_user', ({username}) => {
+         //listen to new user
+         socket.on('new_user', ({username}) => {
             users[socket.id] =  {
                 id: socket.id,
                 username: username
@@ -48,6 +38,25 @@ module.exports = function(server) {
                 totalusers: Object.keys(users).length
             })
         })
+
+        //listen to user typing
+        socket.on('user_typing' , (data) => {
+            typers[socket.id] = 1
+            socket.broadcast.emit("user_typing" , {
+                user: users[socket.id].username,
+                typers: Object.keys(typers).length
+            })      
+           
+        })
+
+        //listen to user stopped typing
+        socket.on('user_stopped_typing', () => {
+            console.log('not yping')
+            delete typers[socket.id]
+            socket.broadcast.emit('user_stopped_typing',Object.keys(typers).length)
+        })
+
+        
         
         socket.on('disconnected', () => {
             console.log("socket disconnected "+ socket.id)
