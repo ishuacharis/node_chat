@@ -57,7 +57,7 @@ module.exports = function(server) {
         })
 
         
-        
+        //listen to socket disconnection
         socket.on('disconnected', () => {
             console.log("socket disconnected "+ socket.id)
         })
