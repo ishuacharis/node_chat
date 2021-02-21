@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 
-
-
 module.exports = function(uri, options) {
-
 
     mongoose.connect(uri, options)
     .then(
@@ -16,7 +13,5 @@ module.exports = function(uri, options) {
             error: err
         })
     );
-
-
 
 }
