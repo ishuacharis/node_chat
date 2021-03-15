@@ -7,22 +7,22 @@ const { jwt_secret } = require("../config");
 
 passport.use('register', new localStrategy(
     {
-        usernameField: 'username',
-        passwordField: 'phone_no',
+        usernameField: 'phone_no',
+        passwordField: 'username',
         passReqToCallback: true
     } 
 , async(req, username, phone_no, done) => {
 
     try {
-        
-        const user = await User.findOne({username})
+        const { about } = req.body;
+        const user = await User.findOne({phone_no})
 
         if (user) {
             return done(null, false, {
                 message: "Username taken"
             })
         } else {
-            const user = await User.create({username,phone_no})
+            const user = await User.create({username,phone_no, about})
 
             return done(null, user, {
                 message: 'User created'
