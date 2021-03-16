@@ -28,16 +28,33 @@ module.exports = {
             if(!doc) {
                 return res.status(500)
                 .json({
-                    "message": "Internal Server error"
+                    message: "Internal Server error"
                 })
             }
 
             return res.status(200)
             .json({
-                "message": "Updated successfully",
-                "doc": doc
+                message: "Updated successfully",
+                doc: doc
             })
         }
+        
+        
+    },
+
+    async getFriends(req,res, next) {
+        const { user } = req.body;
+        const filter = {phone_no: user};
+        const record =  await User.findOne(filter)
+        .select(["friends"])
+        .populate({path: "friends", select: "username phone_no about"});
+
+        if(!record){
+            return res.status(404).json({message: "User not found"})
+        }
+        const { friends } = record;
+
+        return res.status(200).json({friends: friends , message: "Success"})
 
 
     }

@@ -19,4 +19,5 @@ app.use("/register", require("./routes/register"));
 
 app.use("/chat", require("./routes/single_chat"));
 app.use("/adduser", require("./routes/adduser"));
+app.use("/friends", require("./routes/getFriends"));
 module.exports = app;
